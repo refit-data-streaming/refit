@@ -3,7 +3,7 @@ name: Update Ingestion & Integration containers
 on:
   push:
     branches:
-      - main
+      - N/A
 #    tags:
 #      - 0.0.30-SNAPSHOT
 jobs:
