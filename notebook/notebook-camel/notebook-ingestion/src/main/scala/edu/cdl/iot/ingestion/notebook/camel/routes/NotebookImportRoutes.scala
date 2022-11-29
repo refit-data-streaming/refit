@@ -14,14 +14,6 @@ class NotebookImportRoutes(private val kafkaConfig: KafkaConfig,
   private val logger = LoggerFactory.getLogger(classOf[NotebookImportRoutes])
 
   override def configure(): Unit = {
-    from(s"kafka:${kafkaConfig.topics.`import`}?brokers=${kafkaConfig.host}")
-      .process((exchange: Exchange) => {
-        val body = exchange.getIn.getBody(classOf[Array[Byte]])
-        logger.info("Begin processing Import request")
-        val request = Import.parseFrom(body)
-        importService.performSensorDataImport(request)
-      })
-
     from(s"kafka:${kafkaConfig.topics.trainingWindowImport}?brokers=${kafkaConfig.host}")
       .process((exchange: Exchange) => {
         val body = exchange.getIn.getBody(classOf[Array[Byte]])

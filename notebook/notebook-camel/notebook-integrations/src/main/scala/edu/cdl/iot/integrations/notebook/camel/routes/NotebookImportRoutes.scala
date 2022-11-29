@@ -16,22 +16,6 @@ class NotebookImportRoutes(private val context: CamelContext,
 
   override def configure(): Unit = {
 
-    rest("/notebook/project")
-      .put("/{projectGuid}/import")
-      .`type`(classOf[Import])
-      .outType(classOf[String])
-      .param.name("projectGuid").`type`(RestParamType.path).required(true).endParam()
-      .route()
-      .process((exchange: Exchange) => {
-        val message = exchange.getIn()
-        val projectGuid = UUID.fromString(message.getHeader("projectGuid", classOf[String]))
-        logger.info("Import request received")
-        val request = exchange.getIn.getBody(classOf[Import])
-        importService.saveImportRequest(projectGuid, request)
-        logger.info("Import Request Queued")
-        message.setBody("Import queued")
-      })
-
 
     rest("/notebook/project")
       .put("/{projectGuid}/import/training-window")
