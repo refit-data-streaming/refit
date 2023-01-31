@@ -1,13 +1,13 @@
 version: '3.8'
 services:
   zookeeper:
-    image: 'bitnami/zookeeper:3.5'
+    image: 'bitnami/zookeeper:3.6.3'
     ports:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   refit-kafka:
-    image: 'bitnami/kafka:2.1.0'
+    image: 'bitnami/kafka:3.2.3'
     ports:
       - '9092:9092'
       - '19092:19092'
@@ -20,40 +20,40 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
-  postgres:
-    build: ./resources/pql
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRESQL_PASSWORD=refit
-      - POSTGRESQL_USERNAME=refit
-      - POSTGRESQL_DATABASE=refit
-    volumes:
-      - postgres:/bitnami
-  cassandra:
-    build: ./resources/cql
-    ports:
-      - "7000:7000"
-      - "9042:9042"
-      - "9160:9160"
-    volumes:
-      - cassandra:/bitnami
-
-  minio:
-    image: minio/minio:RELEASE.2020-09-17T04-49-20Z
-    volumes:
-      - minio-1:/data
-    ports:
-      - "9000:9000"
-    environment:
-      MINIO_ACCESS_KEY: refit
-      MINIO_SECRET_KEY: refit-key
-    command: server /data
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+#  postgres:
+#    build: ./resources/pql
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRESQL_PASSWORD=refit
+#      - POSTGRESQL_USERNAME=refit
+#      - POSTGRESQL_DATABASE=refit
+#    volumes:
+#      - postgres:/bitnami
+#  cassandra:
+#    build: ./resources/cql
+#    ports:
+#      - "7000:7000"
+#      - "9042:9042"
+#      - "9160:9160"
+#    volumes:
+#      - cassandra:/bitnami
+#
+#  minio:
+#    image: minio/minio:RELEASE.2020-09-17T04-49-20Z
+#    volumes:
+#      - minio-1:/data
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      MINIO_ACCESS_KEY: refit
+#      MINIO_SECRET_KEY: refit-key
+#    command: server /data
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+#      interval: 30s
+#      timeout: 20s
+#      retries: 3
 
 #  job:
 #    build: resources/job
@@ -70,7 +70,7 @@ networks:
   default:
     driver: bridge
 
-volumes:
-  minio-1:
-  cassandra:
-  postgres:
+#volumes:
+#  minio-1:
+#  cassandra:
+#  postgres:
