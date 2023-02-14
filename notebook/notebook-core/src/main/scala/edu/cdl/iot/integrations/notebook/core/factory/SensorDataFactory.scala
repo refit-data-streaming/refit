@@ -33,5 +33,7 @@ class SensorDataFactory(val schema: Schema) {
 
 
   def fromTsv(line: String): SensorData = fromDelimited(line.split("\t").map(_.trim))
+
+  def fromByteArray(bytes: Array[Byte]): SensorData = SensorData.parseFrom(bytes)
 }
 

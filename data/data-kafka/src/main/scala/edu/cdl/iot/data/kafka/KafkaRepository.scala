@@ -4,7 +4,9 @@ import java.util.concurrent.Future
 import scala.reflect.internal.util.Collections
 import edu.cdl.iot.common.yaml.{KafkaConfig, KafkaTopic}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, RecordMetadata}
-import org.apache.kafka.clients.consumer.{KafkaConsumer, ConsumerRecords}
+import org.apache.kafka.clients.consumer.{ConsumerRecord, KafkaConsumer}
+import org.apache.kafka.common.TopicPartition
+
 import java.time.Duration
 import scala.collection.JavaConverters._
 
@@ -20,8 +22,11 @@ class KafkaRepository(config: KafkaConfig, groupIdentifier: String) {
 
   def receive(topic: String)   = {
     kafkaConsumer.subscribe(List(topic).asJavaCollection)
-    val records: ConsumerRecords[Array[Byte], Array[Byte]] = kafkaConsumer.poll(Duration.ofMillis(1000))
-    records.asScala.map(record => record.value()).toList
+    var records = List[ConsumerRecord[Array[Byte], Array[Byte]]]()
+    while (records.isEmpty) {
+      records = kafkaConsumer.poll(Duration.ofMillis(1000)).asScala.toList
+    }
+    records.map(_.value()).toList
   }
 //  def receive(topic: String): ConsumerRecords[Array[Byte], Array[Byte]] = {
 //    kafkaConsumer.subscribe(List(topic).asJava)

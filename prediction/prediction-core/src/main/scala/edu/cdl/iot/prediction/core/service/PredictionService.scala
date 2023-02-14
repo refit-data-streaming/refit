@@ -35,6 +35,7 @@ class PredictionService(projectRepository: PredictionProjectRepository,
     val timestamp = TimestampHelper.toTimestamp(date)
     val partition = schema.getPartitionString(date)
 
+    // saving prediction
     predictionRepository.save(
       partition = partition,
       timestamp = timestamp,

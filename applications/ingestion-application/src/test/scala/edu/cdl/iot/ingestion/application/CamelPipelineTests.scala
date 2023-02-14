@@ -8,8 +8,10 @@ import edu.cdl.iot.common.yaml.{KafkaConfig, KafkaTopic}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-
+import scala.collection.JavaConverters._
 import java.io.{File, FileInputStream}
+import java.util.Properties
+import org.apache.kafka.clients.admin.{AdminClient, NewTopic}
 
 class CamelPipelineTests extends AnyFlatSpec with should.Matchers with BeforeAndAfterAll  {
   val schemaDirectory = s"${System.getProperty("user.dir")}/common/src/main/resources/schema"
@@ -36,19 +38,27 @@ class CamelPipelineTests extends AnyFlatSpec with should.Matchers with BeforeAnd
       trainingJobScheduled = "KAFKA_TRAINING_JOB_SCHEDULED"
     ))
 
+  // create kafka topic in the broker.
+  val properties = new Properties()
+  properties.setProperty("bootstrap.servers", "localhost:19092")
+  val adminClient = AdminClient.create(properties)
+  val newTopic = new NewTopic("refit.inference.data", 1, 1.toShort)
+  adminClient.createTopics(List(newTopic).asJava)
+
+  // send data to kafka topic data.
   val kafkaRepository = new KafkaRepository(kafkaConfig, "ingestion")
   kafkaRepository.send(kafkaRepository.topics.data, sensorData.toByteArray)
   Thread.sleep(3000)
   val records: Iterable[Array[Byte]] = kafkaRepository.receive(kafkaRepository.topics.data)
   Thread.sleep(3000)
-
-  records should not be null
+  // assert records' size = 2
 
   "Test2" should "Convert from SensorData" in {
     // turn records into sensor data in string
-    val receivedData = records.map(record => new String(record, "UTF-8"))
-    receivedData should not be null
-    assert(receivedData === "1,2,timestamp,1,2,3")
+    // val receivedData = records.map(record => new String(record, "UTF-8"))
+    val data_object = records.map(record => sensorDataFactory.fromByteArray(record))
+    data_object should not be null
+    assert(data_object === "1,2,timestamp,1,2,3")
   }
 
 
