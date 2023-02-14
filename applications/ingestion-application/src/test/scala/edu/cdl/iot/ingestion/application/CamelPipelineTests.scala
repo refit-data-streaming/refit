@@ -58,7 +58,9 @@ class CamelPipelineTests extends AnyFlatSpec with should.Matchers with BeforeAnd
     // val receivedData = records.map(record => new String(record, "UTF-8"))
     val data_object = records.map(record => sensorDataFactory.fromByteArray(record))
     data_object should not be null
-    assert(data_object === "1,2,timestamp,1,2,3")
+    // compare the first value of the data_object to sensorData
+    assert(data_object.head == sensorData)
+    println(data_object.head)
   }
 
 
