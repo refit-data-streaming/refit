@@ -71,7 +71,7 @@ networks:
   default:
     driver: bridge
 
-#volumes:
-#  minio-1:
-#  cassandra:
-#  postgres:
+volumes:
+  minio-1:
+  cassandra:
+  postgres:
