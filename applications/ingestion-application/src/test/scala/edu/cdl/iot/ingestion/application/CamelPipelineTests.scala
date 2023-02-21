@@ -24,20 +24,20 @@ class CamelPipelineTests extends AnyFlatSpec with should.Matchers with BeforeAnd
   // SensorData(b6ee5bab-08dd-49b0-98b6-45cd0a28b12f,2,timestamp,
   // Map(temperature -> 1.0, pressure -> 2.0, wind -> 3.0),Map(),Map(),Map(),Map(),Map())
   // assert(sensorData == 1)
-  val kafkaConfig = new KafkaConfig(
-    "localhost:19092",
-    new KafkaTopic(
-      modelPublished = "refit.training.models",
-      data = "refit.inference.data",
-      predictions = "refit.inference.predictions",
-      `import` = "refit.training.import",
-      trainingWindowImport = "KAFKA_TRAINING_WINDOW_IMPORT_TOPIC",
-      staticDataImport = "KAFKA_STATIC_DATA_IMPORT_TOPIC",
-      rawSensorData = "refit.inference.raw.data",
-      sensorData = "refit.inference.sensor.data",
-      trainingJobScheduled = "KAFKA_TRAINING_JOB_SCHEDULED"
-    ))
-
+//  val kafkaConfig = new KafkaConfig(
+//    "localhost:19092",
+//    new KafkaTopic(
+//      modelPublished = "refit.training.models",
+//      data = "refit.inference.data",
+//      predictions = "refit.inference.predictions",
+//      `import` = "refit.training.import",
+//      trainingWindowImport = "KAFKA_TRAINING_WINDOW_IMPORT_TOPIC",
+//      staticDataImport = "KAFKA_STATIC_DATA_IMPORT_TOPIC",
+//      rawSensorData = "refit.inference.raw.data",
+//      sensorData = "refit.inference.sensor.data",
+//      trainingJobScheduled = "KAFKA_TRAINING_JOB_SCHEDULED"
+//    ))
+//
 //  // create kafka topic in the broker.
 //  val properties = new Properties()
 //  properties.setProperty("bootstrap.servers", "localhost:19092")

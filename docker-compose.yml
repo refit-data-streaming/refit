@@ -21,50 +21,50 @@ services:
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     depends_on:
       - zookeeper
-#  postgres:
-#    build: ./resources/pql
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      - POSTGRESQL_PASSWORD=refit
-#      - POSTGRESQL_USERNAME=refit
-#      - POSTGRESQL_DATABASE=refit
-#    volumes:
-#      - postgres:/bitnami
-#  cassandra:
-#    build: ./resources/cql
-#    ports:
-#      - "7000:7000"
-#      - "9042:9042"
-#      - "9160:9160"
-#    volumes:
-#      - cassandra:/bitnami
-#
-#  minio:
-#    image: minio/minio:RELEASE.2020-09-17T04-49-20Z
-#    volumes:
-#      - minio-1:/data
-#    ports:
-#      - "9000:9000"
-#    environment:
-#      MINIO_ACCESS_KEY: refit
-#      MINIO_SECRET_KEY: refit-key
-#    command: server /data
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
-#      interval: 30s
-#      timeout: 20s
-#      retries: 3
+  postgres:
+    build: ./resources/pql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_PASSWORD=refit
+      - POSTGRESQL_USERNAME=refit
+      - POSTGRESQL_DATABASE=refit
+    volumes:
+      - postgres:/bitnami
+  cassandra:
+    build: ./resources/cql
+    ports:
+      - "7000:7000"
+      - "9042:9042"
+      - "9160:9160"
+    volumes:
+      - cassandra:/bitnami
 
-#  job:
-#    build: resources/job
-#    environment:
-#      MINIO_ACCESS_KEY: refit
-#      MINIO_SECRET_KEY: refit-key
-#      MINIO_HOST: http://minio:9000
-#      MINIO_BUCKET: refit-jobs
-#      SCRIPT_LOCATION: test-upload-folder/
-#      SCRIPT_FILE: index.py
+  minio:
+    image: minio/minio:RELEASE.2020-09-17T04-49-20Z
+    volumes:
+      - minio-1:/data
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: refit
+      MINIO_SECRET_KEY: refit-key
+    command: server /data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  job:
+    build: resources/job
+    environment:
+      MINIO_ACCESS_KEY: refit
+      MINIO_SECRET_KEY: refit-key
+      MINIO_HOST: http://minio:9000
+      MINIO_BUCKET: refit-jobs
+      SCRIPT_LOCATION: test-upload-folder/
+      SCRIPT_FILE: index.py
 
 
 networks:
