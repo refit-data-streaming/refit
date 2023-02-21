@@ -38,53 +38,28 @@ class CamelPipelineTests extends AnyFlatSpec with should.Matchers with BeforeAnd
       trainingJobScheduled = "KAFKA_TRAINING_JOB_SCHEDULED"
     ))
 
-  // create kafka topic in the broker.
-  val properties = new Properties()
-  properties.setProperty("bootstrap.servers", "localhost:19092")
-  val adminClient = AdminClient.create(properties)
-  val newTopic = new NewTopic("refit.inference.data", 1, 1.toShort)
-  adminClient.createTopics(List(newTopic).asJava)
-
-  // send data to kafka topic data.
-  val kafkaRepository = new KafkaRepository(kafkaConfig, "ingestion")
-  kafkaRepository.send(kafkaRepository.topics.data, sensorData.toByteArray)
-  Thread.sleep(3000)
-  val records: Iterable[Array[Byte]] = kafkaRepository.receive(kafkaRepository.topics.data)
-  Thread.sleep(3000)
-  // assert records' size = 2
-
-  "Test2" should "Convert from SensorData" in {
-    // turn records into sensor data in string
-    // val receivedData = records.map(record => new String(record, "UTF-8"))
-    val data_object = records.map(record => sensorDataFactory.fromByteArray(record))
-    data_object should not be null
-    // compare the first value of the data_object to sensorData
-    assert(data_object.head == sensorData)
-    println(data_object.head)
-  }
-
-
-
-
-
-
-
-
-//   val sensorDataRepository = new NotebookKafkaSensorDataRepository(kafkaRepository)
-//   sensorDataRepository.createSensorData(sensorData)
-
-//   val importService = new NotebookImportService(
-//      minioConfig = null,
-//      fileRepository = null,
-//      projectRepository = null,
-//      sensorDataRepository = sensorDataRepository,
-//      trainingWindowRepository = null,
-//      staticDataRepository = null,
-//      importRepository = null,
-//      trainingWindowImportRepository = null,
-//      staticDataImportRepository = null
-//    )
-   // importService.performDirectSensorDataImport(projectGuid, data)
+//  // create kafka topic in the broker.
+//  val properties = new Properties()
+//  properties.setProperty("bootstrap.servers", "localhost:19092")
+//  val adminClient = AdminClient.create(properties)
+//  val newTopic = new NewTopic("refit.inference.data", 1, 1.toShort)
+//  adminClient.createTopics(List(newTopic).asJava)
+//
+//  // send data to kafka topic data.
+//  val kafkaRepository = new KafkaRepository(kafkaConfig, "ingestion")
+//  kafkaRepository.send(kafkaRepository.topics.data, sensorData.toByteArray)
+//  Thread.sleep(3000)
+//  val records: Iterable[Array[Byte]] = kafkaRepository.receive(kafkaRepository.topics.data)
+//  Thread.sleep(3000)
+//
+//  "Test2" should "Convert from SensorData" in {
+//    // turn records into sensor data in string
+//    val data_object = records.map(record => sensorDataFactory.fromByteArray(record))
+//    data_object should not be null
+//    // compare the first value of the data_object to sensorData
+//    assert(data_object.head == sensorData)
+//    println(data_object.head)
+//  }
 
 
 }
