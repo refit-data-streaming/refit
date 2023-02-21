@@ -22,6 +22,10 @@ class KafkaConfig(@BeanProperty var host: String,
     properties.put("transaction.timeout.ms", "900000")
     properties
   }
+
+  def getHost() = host
+
+  def getTopic() = topics
 }
 
 class KafkaTopic(@BeanProperty var modelPublished: String,
