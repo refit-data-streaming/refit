@@ -23,7 +23,7 @@ class IngestionDependencies(config: RefitConfig,
   val kafka_host = config.getKafkaConfig().getHost()
   properties.setProperty("bootstrap.servers", kafka_host)
   val adminClient = AdminClient.create(properties)
-  val kafka_topics = config.getKafkaConfig().getTopic()
+  val kafka_topics = config.getKafkaConfig().getTopics()
   val data = new NewTopic(kafka_topics.data, 1, 1.toShort)
   val predictions = new NewTopic(kafka_topics.predictions, 1, 1.toShort)
   val modelPublished = new NewTopic(kafka_topics.modelPublished, 1, 1.toShort)

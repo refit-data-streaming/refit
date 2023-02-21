@@ -23,9 +23,6 @@ class KafkaConfig(@BeanProperty var host: String,
     properties
   }
 
-  def getHost() = host
-
-  def getTopic() = topics
 }
 
 class KafkaTopic(@BeanProperty var modelPublished: String,
