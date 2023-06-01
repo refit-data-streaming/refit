@@ -35,6 +35,7 @@ class PredictionRoutes(private val context: CamelContext,
       .process((exchange: Exchange) => {
         val prediction = exchange.getIn().getBody(classOf[Prediction])
         val schema = exchange.getIn().getHeader(Constants.SCHEMA_HEADER, classOf[Schema])
+        // save prediction
         predictionService.savePrediction(prediction, schema)
       })
   }

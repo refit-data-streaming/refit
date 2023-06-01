@@ -28,6 +28,7 @@ object CamelMain {
     context.addComponent("netty-http", new NettyHttpComponent)
     context.addComponent("kafka", kafkaComponent)
     context.addRoutes(dependencies.grafanaRoutes)
+    // 1. prediction route
     context.addRoutes(dependencies.predictionRoutes)
     context.addRoutes(dependencies.notebookQueryRoutes)
     context.addRoutes(dependencies.notebookImportRoutes)

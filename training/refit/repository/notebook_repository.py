@@ -68,6 +68,7 @@ class NotebookRepository:
                       path: str,
                       input_fields: List[str]):
         url = self.url(f"project/{project_guid}/model")
+        # send it to refit, input_fields specifies which fields in the sensor_data object to use as input
         payload = json.dumps({
             "modelGuid": model_guid,
             "path": path,

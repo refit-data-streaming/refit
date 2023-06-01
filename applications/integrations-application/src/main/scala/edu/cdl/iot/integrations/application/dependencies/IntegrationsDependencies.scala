@@ -68,6 +68,7 @@ class IntegrationsDependencies(config: RefitConfig,
     decryptionHelperProvider = decryptionHelperProvider
   )
 
+  // cassandraRepository is used in predictionDependencies
   private val predictionDependencies = new PredictionDependencies(
     kafkaConfig = config.getKafkaConfig(),
     cassandraRepository = cassandraRepository,
@@ -86,5 +87,6 @@ class IntegrationsDependencies(config: RefitConfig,
   val notebookModelRoutes: NotebookModelRoutes = notebookDependencies.modelRoutes
   val notebookProjectRoutes: NotebookProjectRoutes = notebookDependencies.projectRoutes
   val notebookImportRoutes: NotebookImportRoutes = notebookDependencies.importRoutes
+  // prediction route defined here
   val predictionRoutes: PredictionRoutes = predictionDependencies.predictionRoutes
 }

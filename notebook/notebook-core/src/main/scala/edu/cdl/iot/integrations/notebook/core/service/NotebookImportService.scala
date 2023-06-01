@@ -77,7 +77,12 @@ class NotebookImportService(minioConfig: MinioConfig,
     // in this case the filepath contains the single line data string
     val sensorData = sensorDataFactory.fromCsv(data.toProto(projectGuid).filePath)
     logger.info("sensorData before calling createSensorData: {}",sensorData)
-    sensorDataRepository.createSensorData(sensorData)
+    if(sensorDataRepository == null) {
+      logger.error("sensorDataRepository is null")
+    } else {
+      sensorDataRepository.createSensorData(sensorData)
+    }
+
   }
 
 }

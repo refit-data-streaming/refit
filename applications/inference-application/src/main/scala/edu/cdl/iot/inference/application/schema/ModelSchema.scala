@@ -4,6 +4,7 @@ import edu.cdl.iot.protocol.Model.Model
 import org.apache.flink.api.common.serialization.{DeserializationSchema, SerializationSchema}
 import org.apache.flink.api.common.typeinfo.TypeInformation
 
+// model schema
 class ModelSchema extends DeserializationSchema[Model] with SerializationSchema[Model] {
   override def deserialize(message: Array[Byte]): Model = Model.parseFrom(message)
 

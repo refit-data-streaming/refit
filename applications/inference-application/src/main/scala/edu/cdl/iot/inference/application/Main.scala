@@ -36,10 +36,11 @@ object Main {
     config.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE)
     config.setCheckpointInterval(checkpointInterval)
 
+    // initialize model source with model schema
     val modelSrc = new FlinkKafkaConsumer[Model](kafkaSettings.topics.modelPublished, new ModelSchema, kafkaConfig)
     val rawSensorDataSource = new FlinkKafkaConsumer[SensorData](kafkaSettings.topics.data, new SensorDataSchema, kafkaConfig)
     val sensorDataSource = new FlinkKafkaConsumer[SensorData](kafkaSettings.topics.sensorData, new SensorDataJsonSchema, kafkaConfig)
-
+    // here, the consumer is reading from the kafka in SensorDataJsonSchema,
 
     val model = env
       .addSource(modelSrc, Sources.models)

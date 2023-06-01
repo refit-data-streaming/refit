@@ -22,6 +22,7 @@ class NotebookDependencies(config: RefitConfig,
                            minioRepository: MinioRepository) {
 
   private val projectRepository = new NotebookCassandraProjectRepository(cassandraRepository)
+  // initialize sensorData repositories
   private val sensorDataRepository = new NotebookKafkaSensorDataRepository(kafkaRepository)
   private val trainingWindowRepository = new NotebookCassandraTrainingWindowRepository(cassandraRepository)
 

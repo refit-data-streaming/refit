@@ -7,7 +7,7 @@ import edu.cdl.iot.data.cassandra.CassandraRepository
 
 import scala.collection.JavaConverters.mapAsJavaMapConverter
 
-
+// here
 class CassandraPredictionRepository(cassandraRepository: CassandraRepository) {
   private val keyspace = cassandraRepository.keyspace
 

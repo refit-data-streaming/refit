@@ -1,6 +1,7 @@
 package edu.cdl.iot.integrations.scheduler.kube.repository
 
 import java.io.FileReader
+import java.io.File
 
 import edu.cdl.iot.common.config.RefitConfig
 import edu.cdl.iot.common.constants.EnvConstants
@@ -22,7 +23,11 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
   private val kubeConfigPath = "/.kube/config"
   private val minioConfig = refitConfig.getMinioConfig()
   private val client =
-    ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
+    if (new File(kubeConfigPath).exists()) {
+      ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
+    } else {
+      ClientBuilder.standard().build()
+    }
 
   private val logger = LoggerFactory.getLogger(classOf[KubeTrainingJobDeploymentRepository])
 

@@ -6,7 +6,7 @@ import edu.cdl.iot.inference.application.dto.SensorDataDto.toSensorData
 import edu.cdl.iot.protocol.SensorData.SensorData
 import org.apache.flink.api.common.serialization.{DeserializationSchema, SerializationSchema}
 import org.apache.flink.api.common.typeinfo.TypeInformation
-
+// the schema is used to serialize and deserialize data
 class SensorDataJsonSchema extends SerializationSchema[SensorData] with DeserializationSchema[SensorData] {
 
   @transient private lazy val gson = new Gson

@@ -17,6 +17,7 @@ class PredictionDependencies(kafkaConfig: KafkaConfig,
   private val sensorRepository = new PredictionCassandraSensorRepository(cassandraRepository)
   private val sensorDataRepository = new PredictionCassandraSensorDataRepository(cassandraRepository)
 
+  // 4. Create the service
   private val predictionSerice = new PredictionService(
     projectRepository = projectRepository,
     sensorRepository = sensorRepository,
@@ -24,6 +25,7 @@ class PredictionDependencies(kafkaConfig: KafkaConfig,
     encryptionHelperProvider = encryptionHelperProvider
   )
 
+  // 3. Create the routes
   val predictionRoutes = new PredictionRoutes(
     context = camelContext,
     kafkaConfig = kafkaConfig,

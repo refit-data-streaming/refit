@@ -37,6 +37,7 @@ class IngestionDependencies(config: RefitConfig,
   adminClient.createTopics(newTopic.asJava)
 
   private val cassandraRepository = new CassandraRepository(config.getCassandraConfig())
+  // kafka repository
   private val kafkaRepository = new KafkaRepository(config.getKafkaConfig(), "ingestion")
   private val minioRepository = new MinioRepository(config.getMinioConfig())
 
