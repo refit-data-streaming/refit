@@ -71,5 +71,6 @@ def submit_python(feature_extractor = None):
         print(f"There was an error deploying the scala inference service")
     finally:
         os.chdir('../')
-        os.system(f'rm -rf {submit_directory}')
+        # temporarily keeping the submit directory
+#        os.system(f'rm -rf {submit_directory}')
 

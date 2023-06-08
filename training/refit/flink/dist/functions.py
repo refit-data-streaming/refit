@@ -166,6 +166,7 @@ def _integers(project_guid: Series,
                        'integers': integers,
                        'labels': labels,
                        'datasources': datasources})
+    # moidfy the feature extractor here?
     return _extract_features(df, key, feature_extractor.extract_integers)
 
 
