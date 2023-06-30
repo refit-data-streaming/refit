@@ -1,6 +1,6 @@
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
-
+from pyflink.table import Tumble
 
 class RefitFeatureEnrichment():
     def __init__(self):
@@ -45,6 +45,17 @@ class RefitFeatureEnrichment():
 
         self.env.execute("CDL IoT - Feature Extraction")
 
+    def run_udf1(self):
+
+        self.table_env.from_path('refit_raw_sensor_data') \
+            .window(Tumble.over("1.hour").on("timestamp").alias("w")) \
+            .group_by("w, sensorId") \
+            .select("sensorId, w.start as window_start, w.end as window_end, doubles, strings, integers, labels, datasources") \
+            .execute_insert('refit_sensor_data')
+
+
+
+        
     # WIP, currently not working
     def run(self):
         from .functions import doubles
@@ -68,4 +79,4 @@ class RefitFeatureEnrichment():
 
 
 if __name__ == '__main__':
-    RefitFeatureEnrichment().run_udf()
+    RefitFeatureEnrichment().run_udf1()
