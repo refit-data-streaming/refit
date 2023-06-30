@@ -54,6 +54,39 @@ class RefitFeatureEnrichment():
             .execute_insert('refit_sensor_data')
 
 
+def run_udf2(self):
+    from pyflink.common.watermark_strategy import watermark_strategy_for_bounded_out_of_orderness
+    from pyflink.common.event_time import from_pandas
+    from pyflink.common.time import timedelta
+    from pyflink.table.window import Slide
+
+    from .functions import doubles, strings, integers, labels, datasources
+
+    self.table_env.register_function("doubles", doubles)
+    self.table_env.register_function("strings", strings)
+    self.table_env.register_function("integers", integers)
+    self.table_env.register_function("labels", labels)
+    self.table_env.register_function("datasources", datasources)
+
+    # Set up a watermark strategy that simply uses the timestamp as the watermark
+    watermark_strategy = watermark_strategy_for_bounded_out_of_orderness(from_pandas(df['timestamp']), timedelta(seconds=0))
+
+    # Assign the watermark strategy to our table
+    source_table = self.table_env.from_path('refit_raw_sensor_data').assign_timestamps_and_watermarks(watermark_strategy)
+
+    # Now we can perform a sliding window aggregation
+    source_table.window(Slide.over("60.minutes").every("1.rows").on("timestamp").alias("w")) \
+        .group_by("w, projectGuid, sensorId") \
+        .select("projectGuid, sensorId, w.start as window_start, w.end as window_end, "
+                "doubles(projectGuid, sensorId, timestamp, doubles, strings, integers, labels, dataSources) as doubles,"
+                "strings(projectGuid, sensorId, timestamp, doubles, strings, integers, labels, dataSources) as strings,"
+                "integers(projectGuid, sensorId, timestamp, doubles, strings, integers, labels, dataSources) as integers,"
+                "labels(projectGuid, sensorId, timestamp, doubles, strings, integers, labels, dataSources) as labels,"
+                "datasources(projectGuid, sensorId, timestamp, doubles, strings, integers, labels, dataSources) as dataSources"
+                ) \
+        .execute_insert('refit_sensor_data')
+
+    self.env.execute("CDL IoT - Feature Extraction")
 
         
     # WIP, currently not working
