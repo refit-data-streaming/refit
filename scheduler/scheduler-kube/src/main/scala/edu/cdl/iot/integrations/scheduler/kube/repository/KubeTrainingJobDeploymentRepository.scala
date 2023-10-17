@@ -30,7 +30,7 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
  
   
   private val client =
-    if (new File(kubeConfigPath).exists()) {
+    if (new File(kubeConfigPath).exists() && kubeConfigFile.canRead() )   {
       logger.info("Kube config file /.kube/config found, using the configuration file")
       ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
     } else {
