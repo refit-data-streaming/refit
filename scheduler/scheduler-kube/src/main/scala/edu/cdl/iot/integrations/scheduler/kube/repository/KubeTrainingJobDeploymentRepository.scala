@@ -28,9 +28,8 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
   private val minioConfig = refitConfig.getMinioConfig()
   private val logger = LoggerFactory.getLogger(classOf[KubeTrainingJobDeploymentRepository])
  
-  
   private val client =
-    if (new File(kubeConfigPath).exists() && kubeConfigFile.canRead() )   {
+    if (new File(kubeConfigPath).exists() && new File(kubeConfigPath).exists()  )   {
       logger.info("Kube config file /.kube/config found, using the configuration file")
       ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
     } else {
