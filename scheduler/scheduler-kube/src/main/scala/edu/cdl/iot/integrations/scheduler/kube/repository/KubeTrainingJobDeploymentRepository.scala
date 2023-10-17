@@ -2,6 +2,7 @@ package edu.cdl.iot.integrations.scheduler.kube.repository
 
 import java.io.FileReader
 import java.io.File
+import java.nio.file.Paths
 
 import edu.cdl.iot.common.config.RefitConfig
 import edu.cdl.iot.common.constants.EnvConstants
@@ -20,9 +21,14 @@ import scala.collection.JavaConverters.mapAsJavaMapConverter
 class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
                                            config: SchedulerKubeConfig) extends TrainingJobDeploymentRepository {
 
-  private val kubeConfigPath = "/.kube/config"
+  private val userHome = System.getProperty("user.home")
+  private val kubeConfigPath = Paths.get(userHome, ".kube", "config").toString
+
+  // private val kubeConfigPath = "/.kube/config"
   private val minioConfig = refitConfig.getMinioConfig()
   private val logger = LoggerFactory.getLogger(classOf[KubeTrainingJobDeploymentRepository])
+ 
+  /*
   private val client =
     if (new File(kubeConfigPath).exists()) {
       logger.info("Kube config file /.kube/config found, using the configuration file")
@@ -31,7 +37,16 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
       logger.info("Kube config file /.kube/config not found, using the in cluster configuration")
       ClientBuilder.standard().build()
     }
-
+  */
+  
+private val kubeConfigFile = new File(kubeConfigPath)
+if (!kubeConfigFile.exists() || !kubeConfigFile.canRead()) {
+  logger.error(s"Kube config file at $kubeConfigPath either does not exist or is not readable.")
+  // Consider throwing an exception or taking alternative action
+} else {
+      logger.info("Kube config file /.kube/config found, using the configuration file")
+      ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
+}
 
 
   Configuration.setDefaultApiClient(client)
