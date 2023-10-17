@@ -39,14 +39,15 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
     }
   */
   
-private val kubeConfigFile = new File(kubeConfigPath)
-if (!kubeConfigFile.exists() ) { //|| !kubeConfigFile.canRead()) {
-  logger.error(s"Kube config file at $kubeConfigPath either does not exist or is not readable.")
-  // Consider throwing an exception or taking alternative action
-} else {
-      logger.info("Kube config file /.kube/config found, using the configuration file")
-      ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
-}
+  private val kubeConfigFile = new File(kubeConfigPath)
+  private val client =
+     if (!kubeConfigFile.exists() ) { //|| !kubeConfigFile.canRead()) {
+         logger.error(s"Kube config file at $kubeConfigPath either does not exist or is not readable.")
+         // Consider throwing an exception or taking alternative action
+     } else {
+       logger.info("Kube config file /.kube/config found, using the configuration file")
+       ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
+      }
 
   logger.error(s"after config loading.")
 
