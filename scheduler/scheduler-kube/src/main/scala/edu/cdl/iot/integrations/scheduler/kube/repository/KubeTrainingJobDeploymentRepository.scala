@@ -21,10 +21,10 @@ import scala.collection.JavaConverters.mapAsJavaMapConverter
 class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
                                            config: SchedulerKubeConfig) extends TrainingJobDeploymentRepository {
 
-  private val userHome = System.getProperty("user.home")
-  private val kubeConfigPath = Paths.get(userHome, ".kube", "config").toString
+  //private val userHome = System.getProperty("user.home")
+  //private val kubeConfigPath = Paths.get(userHome, ".kube", "config").toString
 
-  // private val kubeConfigPath = "/.kube/config"
+  private val kubeConfigPath = "/.kube/config"
   private val minioConfig = refitConfig.getMinioConfig()
   private val logger = LoggerFactory.getLogger(classOf[KubeTrainingJobDeploymentRepository])
  
@@ -48,6 +48,7 @@ if (!kubeConfigFile.exists() || !kubeConfigFile.canRead()) {
       ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
 }
 
+  logger.error(s"after config loading.")
 
   Configuration.setDefaultApiClient(client)
   val api = new BatchV1Api()
