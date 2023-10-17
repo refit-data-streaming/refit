@@ -40,7 +40,7 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
   */
   
 private val kubeConfigFile = new File(kubeConfigPath)
-if (!kubeConfigFile.exists() || !kubeConfigFile.canRead()) {
+if (!kubeConfigFile.exists() ) { //|| !kubeConfigFile.canRead()) {
   logger.error(s"Kube config file at $kubeConfigPath either does not exist or is not readable.")
   // Consider throwing an exception or taking alternative action
 } else {
