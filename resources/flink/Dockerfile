@@ -14,6 +14,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python && \
 RUN mkdir /opt/flink/plugins/s3-fs-presto
 
 ADD requirements.txt /tmp/lib/requirements.txt
+RUN pip install --upgrade pip 
 RUN pip install -r /tmp/lib/requirements.txt
 
 RUN wget -P /opt/flink/lib https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka_2.12/1.11.2/flink-sql-connector-kafka_2.12-1.11.2.jar
