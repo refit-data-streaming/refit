@@ -27,7 +27,20 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
   private val kubeConfigPath = "/.kube/config"
   private val minioConfig = refitConfig.getMinioConfig()
   private val logger = LoggerFactory.getLogger(classOf[KubeTrainingJobDeploymentRepository])
- 
+
+  // This change relies on the in-cluster configuration and doesn't expect a .kube/config file to be present. 
+  // This requires necessary RBAC settings are in place for the pod's service account, so the application has 
+  // the required permissions to work with the Kubernetes API
+  
+  private val client = try {
+  logger.info("Using in-cluster configuration")
+  ClientBuilder.standard().build()
+} catch {
+  case e: Exception =>
+    logger.error("Could not create the Kubernetes client", e)
+    throw e
+}
+/*
   private val client =
     if (new File(kubeConfigPath).exists() )   {
       logger.info("Kube config file /.kube/config found, using the configuration file")
@@ -36,7 +49,8 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
       logger.info("Kube config file /.kube/config not found, using the in cluster configuration")
       ClientBuilder.standard().build()
     }
-  
+
+  */
   /*
   private val kubeConfigFile = new File(kubeConfigPath)
   private val client =
