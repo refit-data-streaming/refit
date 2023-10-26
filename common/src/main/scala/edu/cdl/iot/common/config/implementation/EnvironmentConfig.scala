@@ -69,10 +69,10 @@ class EnvironmentConfig extends RefitConfig with Serializable {
   //
     override val getPostgresConfig: () => PostgresConfig = () => {
     // Extracting environment variables
-    val postgresSchema = sys.env(EnvConstants.POSTGRES_SCHEMA)
-    val postgresHost = sys.env(EnvConstants.POSTGRES_HOST)
-    val postgresUsername = sys.env(EnvConstants.POSTGRES_USERNAME)
-    val postgresPassword = sys.env(EnvConstants.POSTGRES_PASSWORD) // You might not want to log this
+    val postgresSchema = sys.env(EnvConstants.POSTGRESQL_SCHEMA)
+    val postgresHost = sys.env(EnvConstants.POSTGRESQL_HOST)
+    val postgresUsername = sys.env(EnvConstants.POSTGRESQL_USERNAME)
+    val postgresPassword = sys.env(EnvConstants.POSTGRESQL_PASSWORD) // You might not want to log this
 
     // Logging the information for debugging
     logger.info(s"Postgres Schema: $postgresSchema")
