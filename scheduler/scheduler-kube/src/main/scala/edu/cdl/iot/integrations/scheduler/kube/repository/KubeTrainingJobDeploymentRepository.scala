@@ -62,10 +62,12 @@ class KubeTrainingJobDeploymentRepository(refitConfig: RefitConfig,
        ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build()
       }*/
 
-  logger.error(s"after config loading.")
+  logger.info(s"after config loading.")
 
   Configuration.setDefaultApiClient(client)
   val api = new BatchV1Api()
+
+  logger.info(s"api instance created.")
 
   def buildPod(trainingJob: TrainingJob): V1Job =
     new V1JobBuilder()
