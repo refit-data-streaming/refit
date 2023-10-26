@@ -56,6 +56,7 @@ class EnvironmentConfig extends RefitConfig with Serializable {
       buckets = buckets
     )
   }
+  /*
   override val getPostgresConfig: () => PostgresConfig = () => new PostgresConfig(
     schema = sys.env(EnvConstants.POSTGRES_SCHEMA),
     host = sys.env(EnvConstants.POSTGRES_HOST),
@@ -63,4 +64,31 @@ class EnvironmentConfig extends RefitConfig with Serializable {
     password = sys.env(EnvConstants.POSTGRES_PASSWORD),
     port = 5432
   )
+*/
+
+  //
+    override val getPostgresConfig: () => PostgresConfig = () => {
+    // Extracting environment variables
+    val postgresSchema = sys.env(EnvConstants.POSTGRES_SCHEMA)
+    val postgresHost = sys.env(EnvConstants.POSTGRES_HOST)
+    val postgresUsername = sys.env(EnvConstants.POSTGRES_USERNAME)
+    val postgresPassword = sys.env(EnvConstants.POSTGRES_PASSWORD) // You might not want to log this
+
+    // Logging the information for debugging
+    logger.info(s"Postgres Schema: $postgresSchema")
+    logger.info(s"Postgres Host: $postgresHost")
+    logger.info(s"Postgres Username: $postgresUsername")
+    logger.info(s"Postgres Password is null or empty: $postgresPassword") 
+
+    // Constructing the PostgresConfig object
+    new PostgresConfig(
+      schema = postgresSchema,
+      host = postgresHost,
+      username = postgresUsername,
+      password = postgresPassword,
+      port = 5432 // This is hardcoded, consider making it configurable if needed
+    )
+  }
+
+  
 }
