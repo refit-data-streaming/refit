@@ -148,4 +148,4 @@ def run_udf3(self):
 
 
 if __name__ == '__main__':
-    RefitFeatureEnrichment().run_udf3()
+    RefitFeatureEnrichment().run_udf()
