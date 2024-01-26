@@ -1,7 +1,7 @@
 import inspect
 import os
 import uuid
-
+import shutil
 import requests
 
 
@@ -43,7 +43,11 @@ def add_imports(source):
 
 def __create_job_artifact(feature_extractor) -> str:
     submit_directory = f".{str(uuid.uuid4())}"
-    os.system(f'[[ -d {submit_directory} ]] && rm -rf {submit_directory}')
+    ## this is shell dependent sh/bash
+    #os.system(f'[[ -d {submit_directory} ]] && rm -rf {submit_directory}') 
+    if os.path.isdir(submit_directory):
+        shutil.rmtree(submit_directory)
+
     os.mkdir(submit_directory)
     os.mkdir(f'{submit_directory}/flink')
     os.mkdir(f'{submit_directory}/flink/submit')
@@ -51,13 +55,14 @@ def __create_job_artifact(feature_extractor) -> str:
     os.system(f'cp -r ./refit/flink/dist/*.sql {submit_directory}')
 
     if feature_extractor is not None:
+        print ("feature extractor is not None")
         source = inspect.getsource(type(feature_extractor))
         class_name = type(feature_extractor).__name__
         mutated_source = source.replace(class_name, 'FeatureExtractor')
         mutated_source = add_imports(mutated_source)
         with open(f'./{submit_directory}/flink/submit/feature_extractor.py', "w") as f:
             f.write(mutated_source)
-
+    print ("job id: ",submit_directory)
     return submit_directory
 
 
