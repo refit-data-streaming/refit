@@ -1,6 +1,6 @@
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
-from pyflink.table import Tumble
+#from pyflink.table import Tumble
 
 class RefitFeatureEnrichment():
     def __init__(self):
@@ -44,7 +44,7 @@ class RefitFeatureEnrichment():
             .execute_insert('refit_sensor_data')
 
         self.env.execute("CDL IoT - Feature Extraction")
-
+    '''
     def run_udf1(self):
 
         self.table_env.from_path('refit_raw_sensor_data') \
@@ -52,8 +52,8 @@ class RefitFeatureEnrichment():
             .group_by("w, sensorId") \
             .select("sensorId, w.start as window_start, w.end as window_end, doubles, strings, integers, labels, datasources") \
             .execute_insert('refit_sensor_data')
-
-
+     '''
+'''
 def run_udf2(self):
     from pyflink.common.watermark_strategy import watermark_strategy_for_bounded_out_of_orderness
     from pyflink.common.event_time import from_pandas
@@ -145,7 +145,7 @@ def run_udf3(self):
             .execute_insert("refit_sensor_data").get_job_client().get_job_execution_result().result()
 
         self.env.execute("CDL IoT - Feature Extraction")
-
+'''
 
 if __name__ == '__main__':
     RefitFeatureEnrichment().run_udf()
